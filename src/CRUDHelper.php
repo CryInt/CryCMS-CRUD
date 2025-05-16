@@ -42,13 +42,4 @@ class CRUDHelper
         Header("Location: " . $location);
         exit;
     }
-
-    public static function getDR(): string
-    {
-        if (defined('DR')) {
-            return DR;
-        }
-
-        return $_SERVER['DOCUMENT_ROOT'];
-    }
 }

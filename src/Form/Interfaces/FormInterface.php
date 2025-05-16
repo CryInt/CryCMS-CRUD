@@ -4,7 +4,7 @@ namespace CryCMS\Form\Interfaces;
 use CryCMS\Exceptions\ThingValidateException;
 use CryCMS\Interfaces\ThingInterface;
 
-interface FormInterface extends ThingInterface
+interface FormInterface
 {
     /** @noinspection PhpUnused */
     public const array FIELDS = [];
@@ -13,6 +13,8 @@ interface FormInterface extends ThingInterface
 
     /** @throws ThingValidateException */
     public function save(): bool;
+
+    public function setAttributes(array $values, bool $withDefault = false): void;
 
     public function getFieldsList(): array;
 

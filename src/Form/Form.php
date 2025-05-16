@@ -146,7 +146,7 @@ class Form
     {
         extract($params, EXTR_SKIP);
 
-        $path = CRUDHelper::getDR() . '/Components/Form/Templates/' . $type . '.tpl.php';
+        $path = __DIR__ . '/Templates/' . $type . '.tpl.php';
         if (file_exists($path)) {
             ob_start();
             include $path;

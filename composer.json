@@ -1,10 +1,10 @@
 {
     "name": "cry/cry-cms-crud",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "CRUD with Bootstrap UI",
     "type": "project",
     "require": {
-        "php": ">=7.3",
+        "php": ">=8.3",
         "cry/cry-cms-html": "1.06",
         "cry/cry-cms-thing": "2.09",
         "cry/cry-cms-db": "1.10",
