@@ -14,6 +14,8 @@ interface FormInterface
     /** @throws ThingValidateException */
     public function save(): bool;
 
+    public function delete(): bool;
+
     public function setAttributes(array $values, bool $withDefault = false): void;
 
     public function getFieldsList(): array;

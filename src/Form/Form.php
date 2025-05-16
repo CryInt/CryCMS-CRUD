@@ -5,6 +5,7 @@ use CryCMS\CRUDHelper;
 use CryCMS\Form\Interfaces\FormInterface;
 use CryCMS\Exceptions\ThingValidateException;
 use CryCMS\HTML;
+use CryCMS\Thing;
 use RuntimeException;
 
 class Form
@@ -53,7 +54,9 @@ class Form
     /** @noinspection PhpUnused */
     public function defaultActionUpdate($actionId, $request): void
     {
-        $this->instance = $this->instance::find()->byPk($actionId);
+        /** @var Thing $class */
+        $class = $this->class;
+        $this->instance = $class::find()->byPk($actionId);
         if ($this->instance === null) {
             CRUDHelper::redirect($this->pageBase);
         }
@@ -67,7 +70,7 @@ class Form
             $this->instance->beforeFormShow();
         }
 
-        if (!empty($request)) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->instance->setAttributes($request);
 
             try {
@@ -86,7 +89,9 @@ class Form
     /** @noinspection PhpUnused */
     public function defaultActionDelete($actionId): void
     {
-        $this->instance = $this->instance::find()->byPk($actionId);
+        /** @var Thing $class */
+        $class = $this->class;
+        $this->instance = $class::find()->byPk($actionId);
         if ($this->instance === null) {
             CRUDHelper::redirect($this->pageBase);
         }
