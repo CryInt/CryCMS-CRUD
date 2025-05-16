@@ -1,0 +1,29 @@
+{
+    "name": "cry/cry-cms-crud",
+    "version": "0.0.1",
+    "description": "CRUD with Bootstrap UI",
+    "type": "project",
+    "require": {
+        "php": ">=7.3",
+        "cry/cry-cms-html": "1.06",
+        "cry/cry-cms-thing": "2.09",
+        "cry/cry-cms-db": "1.10",
+        "ext-json": "*",
+        "ext-mbstring": "*"
+    }
+    ,
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
+    },
+    "autoload": {
+        "psr-4": {
+            "CryCMS\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dmitrii Cry",
+            "email": "cry.int@gmail.com"
+        }
+    ]
+}
