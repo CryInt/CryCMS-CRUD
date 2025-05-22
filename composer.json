@@ -1,8 +1,9 @@
 {
     "name": "cry/cry-cms-crud",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "CRUD with Bootstrap UI",
-    "type": "project",
+    "type": "library",
+    "license": "MIT",
     "require": {
         "php": ">=8.3",
         "cry/cry-cms-html": "1.06",
