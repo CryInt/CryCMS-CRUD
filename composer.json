@@ -1,14 +1,14 @@
 {
     "name": "cry/cry-cms-crud",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "CRUD with Bootstrap UI",
     "type": "library",
     "license": "MIT",
     "require": {
         "php": ">=8.2",
-        "cry/cry-cms-html": "1.06",
-        "cry/cry-cms-thing": "2.09",
-        "cry/cry-cms-db": "1.10",
+        "cry/cry-cms-html": "^1.06",
+        "cry/cry-cms-thing": "^2.09",
+        "cry/cry-cms-db": "^1.10",
         "ext-json": "*",
         "ext-mbstring": "*"
     }
