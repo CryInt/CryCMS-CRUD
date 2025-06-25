@@ -14,7 +14,7 @@ class TableView
     protected array $columns = [];
     protected array $buttons = [];
 
-    public const string DEFAULT_CELL_CLASS = 'p-2';
+    public const DEFAULT_CELL_CLASS = 'p-2';
 
     public function __construct(TableViewInterface $tableViewClass, DataProvider $dataProvider)
     {

@@ -5,8 +5,8 @@ use CryCMS\Thing;
 
 interface TableViewInterface
 {
-    public const array COLUMNS = [];
-    public const array BUTTONS = [];
+    public const COLUMNS = [];
+    public const BUTTONS = [];
 
     public function cellPrepare(string $field, Thing $row): string;
 }

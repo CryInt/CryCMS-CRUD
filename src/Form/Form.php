@@ -15,16 +15,16 @@ class Form
 
     public string $pageBase = '/';
 
-    public const string FIELD_TEXT = 'input-text';
-    public const string FIELD_TEXTAREA = 'textarea';
-    public const string FIELD_NUMBER = 'input-number';
-    public const string FIELD_CHECKBOX = 'checkbox';
-    public const string FIELD_CHECKBOX_LIST = 'checkbox-list';
-    public const string FIELD_SELECT = 'select';
-    public const string FIELD_DATE = 'input-date';
-    public const string FIELD_TIME = 'input-time';
+    public const FIELD_TEXT = 'input-text';
+    public const FIELD_TEXTAREA = 'textarea';
+    public const FIELD_NUMBER = 'input-number';
+    public const FIELD_CHECKBOX = 'checkbox';
+    public const FIELD_CHECKBOX_LIST = 'checkbox-list';
+    public const FIELD_SELECT = 'select';
+    public const FIELD_DATE = 'input-date';
+    public const FIELD_TIME = 'input-time';
 
-    protected const array FIELD_METHODS = [
+    protected const FIELD_METHODS = [
         self::FIELD_TEXT => 'InputText',
         self::FIELD_TEXTAREA => 'TextArea',
         self::FIELD_NUMBER => 'InputNumber',

@@ -7,7 +7,7 @@ use CryCMS\Interfaces\ThingInterface;
 interface FormInterface
 {
     /** @noinspection PhpUnused */
-    public const array FIELDS = [];
+    public const FIELDS = [];
 
     public static function find(): ThingInterface;
 
