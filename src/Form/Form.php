@@ -23,6 +23,8 @@ class Form
     public const FIELD_SELECT = 'select';
     public const FIELD_DATE = 'input-date';
     public const FIELD_TIME = 'input-time';
+    public const FIELD_WYSIWYG = 'wysiwyg';
+    public const FIELD_IMAGES_LIST = 'images-list';
 
     protected const FIELD_METHODS = [
         self::FIELD_TEXT => 'InputText',
@@ -33,6 +35,8 @@ class Form
         self::FIELD_SELECT => 'Select',
         self::FIELD_DATE => 'InputDate',
         self::FIELD_TIME => 'InputTime',
+        self::FIELD_WYSIWYG => 'Wysiwyg',
+        self::FIELD_IMAGES_LIST => 'ImagesList',
     ];
 
     public function __construct(string $class)
@@ -294,6 +298,25 @@ class Form
     protected function generateFieldInputTime(string $field, array $properties): void
     {
         $content = $this->template('form-input-time', ['data' => $this->instance, 'title' => $properties['title'], 'field' => $field]);
+
+        echo HTML::div($content, ['class' => 'mb-3']);
+    }
+
+    protected function generateFieldWysiwyg(string $field, array $properties): void
+    {
+        $content = $this->template('form-wysiwyg', ['data' => $this->instance, 'title' => $properties['title'], 'field' => $field]);
+
+        echo HTML::div($content, ['class' => 'mb-3']);
+    }
+
+    protected function generateFieldImagesList(string $field, array $properties): void
+    {
+        $content = $this->template('form-images-list', [
+            'data' => $this->instance,
+            'title' => $properties['title'],
+            'field' => $field,
+            'list' => $properties['list'] ?? [],
+        ]);
 
         echo HTML::div($content, ['class' => 'mb-3']);
     }
