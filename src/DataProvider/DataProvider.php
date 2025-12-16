@@ -146,6 +146,12 @@ class DataProvider
                     continue;
                 }
 
+                if (is_array($value)) {
+                    $wheres[] = $key . ' IN (:' . $key . ')';
+                    $values[$key] = $value;
+                    continue;
+                }
+
                 $compare = '=';
 
                 if (mb_strpos($value, '%', 0, 'UTF-8') !== false) {
