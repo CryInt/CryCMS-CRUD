@@ -17,6 +17,9 @@ $checkedList = [];
 if (is_string($checked) && $data->$checked !== null) {
     $checkedList = $data->$checked;
 }
+elseif (is_array($checked)) {
+    $checkedList = $checked;
+}
 
 echo HTML::label($title, ['class' => 'form-label']);
 ?>
@@ -27,19 +30,19 @@ echo HTML::label($title, ['class' => 'form-label']);
     }
 
     foreach ($list as $value => $name) {
-        $tName = CRUDHelper::transliteration($name);
+        $fieldId = 'check-box-' . CRUDHelper::transliteration($field . '-' . $name . '-' . $value);
 
         $input = HTML::input($field . '[]', $value, [
             'class' => 'form-check-input me-1',
             'type' => 'checkbox',
-            'id' => 'check-box-' . $field . '-' .$tName,
+            'id' => $fieldId,
             'value' => $value,
             'checked' => array_key_exists($value, $checkedList),
         ]);
 
         $label = HTML::label($name, [
             'class' => 'form-check-label',
-            'for' => 'check-box-' . $field . '-' .$tName,
+            'for' => $fieldId,
         ]);
         ?>
         <li class="list-group-item">
