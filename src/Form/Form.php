@@ -11,6 +11,7 @@ use RuntimeException;
 class Form
 {
     protected string $class;
+    protected array $classPresetProperies = [];
     protected FormInterface|null $instance;
 
     public string $pageBase = '/';
@@ -39,19 +40,48 @@ class Form
         self::FIELD_IMAGES_LIST => 'ImagesList',
     ];
 
-    public function __construct(string $class)
+    public function __construct(string $class, array $classPresetProperies = [])
     {
         if (!class_exists($class)) {
             throw new RuntimeException('Class is not exists');
         }
 
         $this->class = $class;
+        $this->classPresetProperies = $classPresetProperies;
+    }
+
+    public function onlyForm($request): void
+    {
+        $this->instance = new $this->class();
+
+        if (!empty($this->classPresetProperies)) {
+            $this->instance->setAttributes($this->classPresetProperies);
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->instance->setAttributes($request);
+
+            try {
+                $this->instance->validate();
+            } catch (ThingValidateException $e) {
+                $this->instance->addError('form', $e->getMessage());
+            }
+        }
+
+        echo $this->template('form', [
+            'form' => $this,
+        ]);
     }
 
     /** @noinspection PhpUnused */
     public function defaultActionCreate($request): void
     {
         $this->instance = new $this->class();
+
+        if (!empty($this->classPresetProperies)) {
+            $this->instance->setAttributes($this->classPresetProperies);
+        }
+
         $this->defaultActionCU($request);
     }
 
@@ -63,6 +93,10 @@ class Form
         $this->instance = $class::find()->byPk($actionId);
         if ($this->instance === null) {
             CRUDHelper::redirect($this->pageBase);
+        }
+
+        if (!empty($this->classPresetProperies)) {
+            $this->instance->setAttributes($this->classPresetProperies);
         }
 
         $this->defaultActionCU($request);
@@ -100,6 +134,10 @@ class Form
             CRUDHelper::redirect($this->pageBase);
         }
 
+        if (!empty($this->classPresetProperies)) {
+            $this->instance->setAttributes($this->classPresetProperies);
+        }
+
         if (method_exists($this->instance, 'beforeFormDelete')) {
             $this->instance->beforeFormDelete();
         }
@@ -122,6 +160,10 @@ class Form
             CRUDHelper::redirect($this->pageBase);
         }
 
+        if (!empty($this->classPresetProperies)) {
+            $this->instance->setAttributes($this->classPresetProperies);
+        }
+
         $this->instance->setAttribute('deleted', 0);
 
         try {
@@ -138,8 +180,8 @@ class Form
         $fields = $this->instance->getFieldsList();
 
         foreach ($fields as $field => $properties) {
-            if (array_key_exists($properties['type'], self::FIELD_METHODS)) {
-                $method = 'generateField' . self::FIELD_METHODS[$properties['type']];
+            if (array_key_exists($properties['type'], static::FIELD_METHODS)) {
+                $method = 'generateField' . static::FIELD_METHODS[$properties['type']];
                 if (method_exists($this, $method)) {
                     $this->$method($field, $properties);
                 }
@@ -165,10 +207,25 @@ class Form
         throw new RuntimeException('Template "' . $type . '" is not exists in Form component', 404);
     }
 
+    public function getInstance(): ?FormInterface
+    {
+        return $this->instance;
+    }
+
     /** @noinspection PhpUnused */
     protected function generateFieldInputText(string $field, array $properties): void
     {
-        $content = $this->template('form-input-text', ['data' => $this->instance, 'title' => $properties['title'], 'field' => $field]);
+        $fieldProperties = [
+            'data' => $this->instance,
+            'title' => $properties['title'],
+            'field' => $field,
+        ] + $properties;
+
+        if (array_key_exists('type', $fieldProperties)) {
+            unset($fieldProperties['type']);
+        }
+
+        $content = $this->template('form-input-text', $fieldProperties);
 
         echo HTML::div($content, ['class' => 'mb-3']);
     }
