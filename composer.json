@@ -7,7 +7,7 @@
     "require": {
         "php": ">=8.2",
         "cry/cry-cms-html": "^1.06",
-        "cry/cry-cms-thing": "^2.09",
+        "cry/cry-cms-thing": "^2.12",
         "cry/cry-cms-db": "^1.10",
         "ext-json": "*",
         "ext-mbstring": "*"

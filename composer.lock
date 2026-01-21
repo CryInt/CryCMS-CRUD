@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b365b8037d0ac40bd64217dfb9ee931a",
+    "content-hash": "6a4f7c0b1cd5ce5b67a3aa7c7ad93db2",
     "packages": [
         {
             "name": "cry/cry-cms-db",
@@ -83,22 +83,23 @@
         },
         {
             "name": "cry/cry-cms-thing",
-            "version": "2.09",
+            "version": "2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CryInt/CryCMS-Thing.git",
-                "reference": "4a55e0505715c90a49f3b063f8cec287057a7fe2"
+                "reference": "68b4b6504d863255ca0e376c6a1c3d77654f222f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CryInt/CryCMS-Thing/zipball/4a55e0505715c90a49f3b063f8cec287057a7fe2",
-                "reference": "4a55e0505715c90a49f3b063f8cec287057a7fe2",
+                "url": "https://api.github.com/repos/CryInt/CryCMS-Thing/zipball/68b4b6504d863255ca0e376c6a1c3d77654f222f",
+                "reference": "68b4b6504d863255ca0e376c6a1c3d77654f222f",
                 "shasum": ""
             },
             "require": {
-                "cry/cry-cms-db": "^1.10",
+                "cry/cry-cms-db": ">=1.10",
                 "ext-json": "*",
-                "ext-pdo": "*"
+                "ext-pdo": "*",
+                "php": ">=7.3"
             },
             "type": "library",
             "autoload": {
@@ -119,9 +120,9 @@
             "description": "All MySQL record is Object",
             "support": {
                 "issues": "https://github.com/CryInt/CryCMS-Thing/issues",
-                "source": "https://github.com/CryInt/CryCMS-Thing/tree/2.09"
+                "source": "https://github.com/CryInt/CryCMS-Thing/tree/2.12"
             },
-            "time": "2025-03-31T20:10:02+00:00"
+            "time": "2026-01-21T11:10:37+00:00"
         }
     ],
     "packages-dev": [
