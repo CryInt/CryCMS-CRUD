@@ -3,6 +3,7 @@ namespace CryCMS\DataProvider;
 
 use CryCMS\CRUDHelper;
 use CryCMS\Db;
+use CryCMS\Helpers;
 use CryCMS\Thing;
 use RuntimeException;
 
@@ -25,6 +26,12 @@ class DataProvider
     public array $filter = [];
     public array $filterSQL = [];
     public array $order = [];
+
+    public array $select = [];
+    public array $leftJoin = []; /** ['table', 'as', 'condition'] */
+    public array $groupBy = [];
+
+    public const NOT_NULL = 'NOT NULL';
 
     public function __construct($class)
     {
@@ -92,22 +99,30 @@ class DataProvider
     {
         [$wheres, $values] = $this->prepareQuery();
 
-        $query = Db::table($this->class::TABLE)
+        $query = Db::table($this->class::TABLE, 'primary_table')
+            ->select($this->select)
             ->where($wheres)
             ->values($values)
             ->offset($this->offset)
             ->limit($this->limit)
-            ->orderBy($this->order);
+            ->orderBy($this->order)
+            ->groupBy($this->groupBy);
+
+        $this->makeLeftJoin($query);
 
         $list = $query->getAll();
 
         if (!empty($list)) {
-            $count = Db::table($this->class::TABLE)
+            $query = Db::table($this->class::TABLE, 'primary_table')
                 ->select(['COUNT(*) AS num'])
                 ->where($wheres)
                 ->values($values)
                 ->limit(1)
-                ->getOne();
+                ->groupBy($this->groupBy);
+
+            $this->makeLeftJoin($query);
+
+            $count = $query->getOne();
 
             $this->dataCount = $count['num'] ?? 0;
 
@@ -135,6 +150,23 @@ class DataProvider
         return $this->class;
     }
 
+    protected function makeLeftJoin(Db $query): Db
+    {
+        if (!empty($this->leftJoin)) {
+            foreach ($this->leftJoin as $leftJoin) {
+                if (
+                    array_key_exists('table', $leftJoin) &&
+                    array_key_exists('as', $leftJoin) &&
+                    array_key_exists('condition', $leftJoin)
+                ) {
+                    $query->leftJoin($leftJoin['table'], $leftJoin['as'], $leftJoin['condition']);
+                }
+            }
+        }
+
+        return $query;
+    }
+
     protected function prepareQuery(): array
     {
         $wheres = $values = [];
@@ -147,8 +179,13 @@ class DataProvider
                 }
 
                 if (is_array($value)) {
-                    $wheres[] = $key . ' IN (:' . $key . ')';
-                    $values[$key] = $value;
+                    $wheres[] = $key . ' IN (:' . self::cleanKey($key) . ')';
+                    $values[self::cleanKey($key)] = $value;
+                    continue;
+                }
+
+                if ($value === self::NOT_NULL) {
+                    $wheres[] = $key . ' IS NOT NULL';
                     continue;
                 }
 
@@ -183,8 +220,8 @@ class DataProvider
                     $value = mb_substr($value, 1, null, 'UTF-8');
                 }
 
-                $wheres[] = $key . ' ' . $compare . ' :' . $key;
-                $values[$key] = $value;
+                $wheres[] = $key . ' ' . $compare . ' :' . self::cleanKey($key);
+                $values[self::cleanKey($key)] = $value;
             }
         }
 
@@ -201,5 +238,10 @@ class DataProvider
         }
 
         return [$wheres, $values];
+    }
+
+    protected static function cleanKey(string $field): string
+    {
+        return str_replace('.', '_', $field);
     }
 }
