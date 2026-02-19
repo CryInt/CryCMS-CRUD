@@ -26,6 +26,7 @@ class Form
     public const FIELD_TIME = 'input-time';
     public const FIELD_WYSIWYG = 'wysiwyg';
     public const FIELD_IMAGES_LIST = 'images-list';
+    public const FIELD_FILE = 'file';
 
     protected const FIELD_METHODS = [
         self::FIELD_TEXT => 'InputText',
@@ -38,7 +39,10 @@ class Form
         self::FIELD_TIME => 'InputTime',
         self::FIELD_WYSIWYG => 'Wysiwyg',
         self::FIELD_IMAGES_LIST => 'ImagesList',
+        self::FIELD_FILE => 'File',
     ];
+
+    protected bool $isValidated = false;
 
     public function __construct(string $class, array $classPresetProperies = [])
     {
@@ -53,6 +57,7 @@ class Form
     public function onlyForm($request): void
     {
         $this->instance = new $this->class();
+        $this->isValidated = false;
 
         if (!empty($this->classPresetProperies)) {
             $this->instance->setAttributes($this->classPresetProperies);
@@ -63,6 +68,7 @@ class Form
 
             try {
                 $this->instance->validate();
+                $this->isValidated = true;
             } catch (ThingValidateException $e) {
                 $this->instance->addError('form', $e->getMessage());
             }
@@ -210,6 +216,11 @@ class Form
     public function getInstance(): ?FormInterface
     {
         return $this->instance;
+    }
+
+    public function isValidated(): bool
+    {
+        return $this->isValidated;
     }
 
     /** @noinspection PhpUnused */
@@ -375,6 +386,13 @@ class Form
             'list' => $properties['list'] ?? [],
         ]);
 
+        echo HTML::div($content, ['class' => 'mb-3']);
+    }
+
+    protected function generateFieldFile(string $field, array $properties): void
+    {
+        $content = $this->template('form-file', ['data' => $this->instance, 'title' => $properties['title'], 'field' => $field]);
+        
         echo HTML::div($content, ['class' => 'mb-3']);
     }
 }
