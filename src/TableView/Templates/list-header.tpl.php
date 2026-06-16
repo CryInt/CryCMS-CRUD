@@ -43,12 +43,37 @@ if (!empty($columns)) {
         $filterElement = '';
         if (!empty($filters[$key])) {
             $filterData = $filters[$key];
-            $filterElement = HTML::input('filter[' . $key . ']', $filterData['value'] ?? '', [
-                'type' => 'text',
-                'class' => 'form-control font-size-12 p-1' . ($key === $lastColumn ? ' w-75' : ''),
-            ]);
+            
+            if ($filterData['type'] === 'text') {
+                $filterElement = HTML::input('filter[' . $key . ']', $filterData['value'] ?? '', [
+                    'type' => 'text',
+                    'class' => 'form-control font-size-12 p-1' . ($key === $lastColumn ? ' w-75' : ''),
+                ]);
 
-            $filterIsset = true;
+                $filterIsset = true;
+            }
+
+            if ($filterData['type'] === 'select') {
+                $selectOptions = ['' => ''];
+                if (array_key_exists('options', $filterData)) {
+                    if (is_array($filterData['options'])) {
+                        $selectOptions += $filterData['options'];
+                    }
+
+                    if (mb_strpos($filterData['options'], '::', 0, 'UTF-8') !== false) {
+                        [$listClass, $listMethod] = explode('::', $filterData['options']);
+                        $selectOptions += $listClass::{$listMethod};
+                    }
+                }
+
+                $selected = $filterData['value'] ?? null;
+
+                $filterElement = HTML::selectOptions('filter[' . $key . ']', $selectOptions, $selected, [
+                    'class' => 'form-select font-size-12 p-1' . ($key === $lastColumn ? ' w-75' : ''),
+                ]);
+
+                $filterIsset = true;
+            }
         }
 
         if ($key === $lastColumn) {

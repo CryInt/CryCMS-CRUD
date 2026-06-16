@@ -1,6 +1,6 @@
 {
     "name": "cry/cry-cms-crud",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "CRUD with Bootstrap UI",
     "type": "library",
     "license": "MIT",
