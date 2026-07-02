@@ -191,7 +191,11 @@ class DataProvider
 
                 $compare = '=';
 
-                if (mb_strpos($value, '%', 0, 'UTF-8') !== false) {
+                if (mb_strpos($value, '!%', 0, 'UTF-8') !== false) {
+                    $compare = 'NOT LIKE';
+                    $value = str_replace('!%', '%', $value);
+                }
+                elseif (mb_strpos($value, '%', 0, 'UTF-8') !== false) {
                     $compare = 'LIKE';
                 }
 
