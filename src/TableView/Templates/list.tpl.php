@@ -93,6 +93,8 @@ use CryCMS\HTML;
     </form>
 </div>
 
+<form action='' method="post" id="action-post-form"></form>
+
 <div class="container-fluid mt-3 p-0">
     <div class="row">
         <div class="col">
@@ -100,15 +102,25 @@ use CryCMS\HTML;
             if (!empty($buttons)) {
                 $html = [];
                 foreach ($buttons as $properties) {
-                    $html[] = HTML::a(
-                        $properties['title'] ?? '+',
-                        $properties['href'] ?? '?create',
-                        [
+                    if (!empty($properties['type']) && $properties['type'] !== 'button') {
+                        $html[] = HTML::input('action-post', $properties['title'], [
                             'class' => $properties['class'] ?? '',
                             'id' => $properties['id'] ?? '',
-                            'type' => 'button'
-                        ]
-                    );
+                            'type' => $properties['type'],
+                            'form' => $properties['form'] ?? '',
+                        ]);
+                    }
+                    else {
+                        $html[] = HTML::a(
+                            $properties['title'] ?? '+',
+                            $properties['href'] ?? '?create',
+                            [
+                                'class' => $properties['class'] ?? '',
+                                'id' => $properties['id'] ?? '',
+                                'type' => 'button',
+                            ]
+                        );
+                    }
                 }
 
                 echo '' .

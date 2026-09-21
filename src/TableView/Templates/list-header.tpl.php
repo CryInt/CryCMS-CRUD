@@ -38,6 +38,12 @@ if (!empty($columns)) {
             unset($properties['order']);
         }
 
+        foreach ($properties as $property => $null) {
+            if (in_array($property, ['visible', 'cell'])) {
+                unset($properties[$property]);
+            }
+        }
+
         $ths[] = HTML::th($once['title'], $properties);
 
         $filterElement = '';
@@ -74,6 +80,11 @@ if (!empty($columns)) {
 
                 $filterIsset = true;
             }
+
+            if ($filterData['type'] === 'inline') {
+                $filterElement = $filterData['content'] ?? '';
+                $filterIsset = true;
+            }
         }
 
         if ($key === $lastColumn) {
@@ -84,7 +95,17 @@ if (!empty($columns)) {
             ]);
         }
 
-        $tds[] = HTML::td($filterElement, ['class' => 'position-relative']);
+        $cellProperties = [
+            'class' => 'position-relative',
+        ];
+
+        if (array_key_exists('cell', $once)) {
+            if (array_key_exists('class', $once['cell'])) {
+                $cellProperties['class'] .= ' ' . $once['cell']['class'];
+            }
+        }
+
+        $tds[] = HTML::td($filterElement, $cellProperties);
     }
 }
 
